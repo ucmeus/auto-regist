@@ -1,0 +1,155 @@
+/*************************************************
+
+ * Project Name:
+
+ * GAS - Automatic Google Form Respon System by Email
+
+ *
+
+ * Developed By:
+
+ * Marcus Andreno - Marcus Digital Hub
+
+ * Modified By:
+ 
+ * UCME - UCME Lanbs
+
+ * Features:
+
+ * - Google Form Integration
+
+ * - Automatic Email Confirmation
+
+ * - Admin Email Notification
+
+ * - Training Registration Tracking
+
+ *
+
+ * Version: 1.0
+
+ * Year: 2026
+
+ *************************************************/
+
+
+const SHEET_NAME = "Form responses 1";
+
+const ADMIN_EMAIL = "yoe.c.me.us@gmail.com"; // Replace with your administrator email address
+
+
+function onFormSubmit(e) {
+
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+
+  const row = e.range.getRow();
+
+
+  if (row < 2) return;
+
+
+  const fullName = sheet.getRange(row, 2).getValue();       // Column B
+
+  const email = sheet.getRange(row, 3).getValue();          // Column C
+
+  const organisation = sheet.getRange(row, 4).getValue();       // Column D
+
+  const daywillattend = sheet.getRange(row, 5).getValue();   // Column E
+
+  const dietary = sheet.getRange(row, 6).getValue();       // Column F
+
+/*
+*  const formattedDate = trainingDate instanceof Date
+*
+*    ? Utilities.formatDate(trainingDate, Session.getScriptTimeZone(), "MMMM dd, yyyy")
+*
+*    : trainingDate;
+*/
+
+  const userSubject = "Registration Confirmed – Event";
+
+
+  const userMessage = `
+
+Hello ${fullName},
+
+
+Thank you for registering for the Free Google Sheets Training conducted by UCME Labs.
+
+
+Your registration has been successfully received.
+
+
+Registration Details:
+
+Full Name: ${fullName}
+
+Organization: ${organisation}
+
+Day will attend: ${daywillattend}
+
+Dietary: ${dietary}
+
+
+Please check your email regularly for training updates and reminders.
+
+
+We are excited to see you in the training!
+
+
+Best regards,
+
+UCME LABS
+
+a simple works
+
+`;
+
+
+  MailApp.sendEmail(email, userSubject, userMessage);
+
+
+  const adminSubject = "New Registration Received – Free Google Sheets Training";
+
+
+  const adminMessage = `
+
+Hello UCME,
+
+
+A new participant has registered for the Free Google Sheets Training.
+
+
+Registration Details:
+
+Full Name: ${fullName}
+
+Email Address: ${email}
+
+Organization: ${organisation}
+
+Day will attend: ${daywillattend}
+
+Dietary: ${dietary}
+
+
+Please check your Google Sheet for the complete details.
+
+
+UCME Labs Registration System
+
+`;
+
+
+  MailApp.sendEmail(ADMIN_EMAIL, adminSubject, adminMessage);
+
+}
+
+
+/*************************************************
+
+ * End of Script
+
+ * Created by Marcus Andreno, Modified by UCME | a simple works
+
+ *************************************************/
